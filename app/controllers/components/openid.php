@@ -20,9 +20,9 @@
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @version			$Revision: 55 $
+ * @version			$Revision: 62 $
  * @modifiedby		$LastChangedBy: dho $
- * @lastmodified	$Date: 2008-08-27 17:27:08 +0200 (Wed, 27 Aug 2008) $
+ * @lastmodified	$Date: 2008-11-10 15:02:05 +0100 (Mon, 10 Nov 2008) $
  * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 $pathExtra = APP.DS.'vendors'.DS.PATH_SEPARATOR.APP.DS.'vendors'.DS.'pear'.DS.PATH_SEPARATOR.VENDORS.PATH_SEPARATOR.VENDORS.'pear';
@@ -88,7 +88,7 @@ class OpenidComponent extends Object {
 	
 	public function getResponse($currentUrl) {
 		$consumer = $this->getConsumer();
-		$response = $consumer->complete($currentUrl);
+		$response = $consumer->complete($currentUrl, $this->getQuery());
 		
 		return $response;
 	}
@@ -130,6 +130,16 @@ class OpenidComponent extends Object {
 		}
 
 		return new Auth_OpenID_MySQLStore($db);
+	}
+	
+	private function getQuery() {
+		$query = Auth_OpenID::getQuery();
+		
+		// unset the url parameter automatically added by app/webroot/.htaccess 
+		// as it causes problems with the verification of the return_to url
+    	unset($query['url']);
+    	
+    	return $query;
 	}
 	
 	private function getStore() {
