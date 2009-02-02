@@ -78,7 +78,7 @@ class OpenidComponent extends Object {
 			if (Auth_OpenID::isFailure($formHtml)) {
 				throw new Exception('Could not redirect to server: '.$formHtml->message);
 			} else {
-				echo '<html><head><title>OpenID transaction in progress</title></head>'.
+				echo '<html><head><title>OpenID Authentication Redirect</title></head>'.
 					 "<body onload='document.getElementById(\"".$formId."\").submit()'>".
 					 $formHtml.'</body></html>';
 				exit;
