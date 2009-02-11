@@ -2,7 +2,7 @@
 /**
  * A simple OpenID consumer component for CakePHP.
  * 
- * Requires version 2.1.0 of PHP OpenID library from http://openidenabled.com/php-openid/
+ * Requires at least version 2.1.0 of PHP OpenID library from http://openidenabled.com/php-openid/
  * 
  * To make use of Email Address to URL Transformation (EAUT), you also need the
  * EAUT library: http://code.google.com/p/eaut/
@@ -20,9 +20,6 @@
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @version			$Revision: 62 $
- * @modifiedby		$LastChangedBy: dho $
- * @lastmodified	$Date: 2008-11-10 15:02:05 +0100 (Mon, 10 Nov 2008) $
  * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 $pathExtra = APP.DS.'vendors'.DS.PATH_SEPARATOR.APP.DS.'vendors'.DS.'pear'.DS.PATH_SEPARATOR.VENDORS.PATH_SEPARATOR.VENDORS.'pear';
@@ -91,6 +88,14 @@ class OpenidComponent extends Object {
 		$response = $consumer->complete($currentUrl, $this->getQuery());
 		
 		return $response;
+	}
+	
+	public function isOpenIDResponse() {
+		if (count($_GET) > 1 && isset($this->controller->params['url']['openid_ns'])) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private function getConsumer() {
