@@ -22,7 +22,7 @@
  *
  * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
  */
-$pathExtra = APP.DS.'vendors'.DS.PATH_SEPARATOR.APP.DS.'vendors'.DS.'pear'.DS.PATH_SEPARATOR.VENDORS.PATH_SEPARATOR.VENDORS.'pear';
+$pathExtra = APP.'vendors'.DS.PATH_SEPARATOR.APP.'vendors'.DS.'pear'.DS.PATH_SEPARATOR.VENDORS.PATH_SEPARATOR.VENDORS.'pear';
 $path = ini_get('include_path');
 $path = $pathExtra . PATH_SEPARATOR . $path;
 ini_set('include_path', $path);
