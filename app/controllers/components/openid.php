@@ -83,6 +83,18 @@ class OpenidComponent extends Object {
 		}
 	}
 	
+	/**
+	 * Removes expired associations and nonces. 
+	 *
+	 * This method is not called in the normal operation of the component. It provides a way
+	 * for store admins to keep their storage from filling up with expired data.
+	 */
+	public function cleanup() {
+		$store = $this->getStore();
+
+		return $store->cleanup();
+	}
+
 	public function getResponse($currentUrl) {
 		$consumer = $this->getConsumer();
 		$response = $consumer->complete($currentUrl, $this->getQuery());
