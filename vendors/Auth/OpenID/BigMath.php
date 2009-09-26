@@ -374,7 +374,8 @@ function Auth_OpenID_detectMathLibrary($exts)
         }
 
         // Try to load dynamic modules.
-        if (!$loaded) {
+	// XXX checking the version is a hack to avoid http://trac.openidenabled.com/trac/ticket/337
+        if (!$loaded && floatval(phpversion()) < 5.3) {
             foreach ($extension['modules'] as $module) {
                 if (@dl($module . "." . PHP_SHLIB_SUFFIX)) {
                     $loaded = true;

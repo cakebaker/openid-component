@@ -719,7 +719,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _complete_id_res($message, &$endpoint, $return_to)
+    function _complete_id_res($message, $endpoint, $return_to)
     {
         $user_setup_url = $message->getArg(Auth_OpenID_OPENID1_NS,
                                            'user_setup_url');
