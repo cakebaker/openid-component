@@ -26,6 +26,9 @@ class OpenidComponent extends Object {
 	private $importPrefix = '';
 	private $useDatabase = false;
 	private $databaseConfig = 'default';
+	const AX = 'ax';
+	const SREG_REQUIRED = 'sreg_required';
+	const SREG_OPTIONAL = 'sreg_optional';
 	
 	public function __construct() {
 		parent::__construct();
@@ -60,12 +63,15 @@ class OpenidComponent extends Object {
 	}
 	
 	/**
-	 * @param $dataFields An associative array, valid keys are "sreg_required" and "sreg_optional".
-	 * Example_ $dataFields = array('sreg_required' => array('email'), 'sreg_optional' => array('nickname'));
+	 * @param $dataFields An associative array, valid keys are "sreg_required" and "sreg_optional" for
+	 * SReg (simple registration), and "ax" for attribute exchange.
+	 * Examples: 
+	 *   $dataFields = array('sreg_required' => array('email'), 'sreg_optional' => array('nickname'));
+	 *   $dataFields = array('ax' => array(Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson')));
 	 * @throws InvalidArgumentException if an invalid OpenID was provided
 	 */
 	public function authenticate($openidUrl, $returnTo, $realm, $dataFields = array()) {
-		$defaults = array('sreg_required' => array(), 'sreg_optional' => array());
+		$defaults = array(self::AX => array(), self::SREG_REQUIRED => array(), self::SREG_OPTIONAL => array());
 		$dataFields = array_merge($defaults, $dataFields);
 		
 		if (trim($openidUrl) != '') {
@@ -81,11 +87,8 @@ class OpenidComponent extends Object {
 		    throw new InvalidArgumentException('Invalid OpenID');
 		}
 		
-		$sregRequest = Auth_OpenID_SRegRequest::build($dataFields['sreg_required'], $dataFields['sreg_optional']);
-		
-		if ($sregRequest) {
-			$authRequest->addExtension($sregRequest);
-		}
+		$this->addSReg($authRequest, $dataFields);
+		$this->addAX($authRequest, $dataFields);
 		
 		if ($authRequest->shouldSendRedirect()) {
 			$this->redirect($authRequest, $returnTo, $realm);
@@ -119,6 +122,26 @@ class OpenidComponent extends Object {
 		}
 		
 		return false;
+	}
+	
+	private function addAX($authRequest, $dataFields) {
+		if (count($dataFields[self::AX]) > 0) {
+			$ax = new Auth_OpenID_AX_FetchRequest;
+	
+			foreach($dataFields[self::AX] as $attribute){
+        		$ax->add($attribute);
+			}
+		
+			$authRequest->addExtension($ax);
+		}
+	}
+	
+	private function addSReg($authRequest, $dataFields) {
+		$sregRequest = Auth_OpenID_SRegRequest::build($dataFields[self::SREG_REQUIRED], $dataFields[self::SREG_OPTIONAL]);
+		
+		if ($sregRequest) {
+			$authRequest->addExtension($sregRequest);
+		}
 	}
 	
 	private function addToIncludePath($pathToVendorsFolder) {
@@ -220,6 +243,7 @@ class OpenidComponent extends Object {
 	private function importCoreFilesFromOpenIDLibrary() {
 		App::import('Vendor', $this->importPrefix.'consumer', array('file' => 'Auth'.DS.'OpenID'.DS.'Consumer.php'));
 		App::import('Vendor', $this->importPrefix.'sreg', array('file' => 'Auth'.DS.'OpenID'.DS.'SReg.php'));
+		App::import('Vendor', $this->importPrefix.'ax', array('file' => 'Auth'.DS.'OpenID'.DS.'AX.php'));
 	}
 	
 	private function isEmail($string) {
