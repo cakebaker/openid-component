@@ -60,9 +60,14 @@ class OpenidComponent extends Object {
 	}
 	
 	/**
+	 * @param $dataFields An associative array, valid keys are "sreg_required" and "sreg_optional".
+	 * Example_ $dataFields = array('sreg_required' => array('email'), 'sreg_optional' => array('nickname'));
 	 * @throws InvalidArgumentException if an invalid OpenID was provided
 	 */
-	public function authenticate($openidUrl, $returnTo, $realm, $required = array(), $optional = array()) {
+	public function authenticate($openidUrl, $returnTo, $realm, $dataFields = array()) {
+		$defaults = array('sreg_required' => array(), 'sreg_optional' => array());
+		$dataFields = array_merge($defaults, $dataFields);
+		
 		if (trim($openidUrl) != '') {
 			if ($this->isEmail($openidUrl)) {
 				$openidUrl = $this->transformEmailToOpenID($openidUrl);
@@ -76,7 +81,7 @@ class OpenidComponent extends Object {
 		    throw new InvalidArgumentException('Invalid OpenID');
 		}
 		
-		$sregRequest = Auth_OpenID_SRegRequest::build($required, $optional);
+		$sregRequest = Auth_OpenID_SRegRequest::build($dataFields['sreg_required'], $dataFields['sreg_optional']);
 		
 		if ($sregRequest) {
 			$authRequest->addExtension($sregRequest);
