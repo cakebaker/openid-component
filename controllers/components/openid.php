@@ -83,25 +83,9 @@ class OpenidComponent extends Object {
 		}
 		
 		if ($authRequest->shouldSendRedirect()) {
-			$redirectUrl = $authRequest->redirectUrl($realm, $returnTo);
-			
-			if (Auth_OpenID::isFailure($redirectUrl)) {
-				throw new Exception('Could not redirect to server: '.$redirectUrl->message);
-			} else {
-				$this->controller->redirect($redirectUrl);
-			}
+			$this->redirect($authRequest, $returnTo, $realm);
 		} else {
-			$formId = 'openid_message';
-			$formHtml = $authRequest->formMarkup($realm, $returnTo, false , array('id' => $formId));
-
-			if (Auth_OpenID::isFailure($formHtml)) {
-				throw new Exception('Could not redirect to server: '.$formHtml->message);
-			} else {
-				echo '<html><head><title>' . __('OpenID Authentication Redirect', true) . '</title></head>'.
-					 "<body onload='document.getElementById(\"".$formId."\").submit()'>".
-					 $formHtml.'</body></html>';
-				exit;
-			}
+			$this->showFormWithAutoSubmit($authRequest, $returnTo, $realm);
 		}
 	}
 	
@@ -239,6 +223,30 @@ class OpenidComponent extends Object {
 	
 	private function isPathWithinPlugin($path) {
 		return strpos($path, DS.'plugins'.DS) ? true : false;
+	}
+	
+	private function redirect($request, $returnTo, $realm) {
+		$redirectUrl = $request->redirectUrl($realm, $returnTo);
+
+		if (Auth_OpenID::isFailure($redirectUrl)) {
+			throw new Exception('Could not redirect to server: '.$redirectUrl->message);
+		}
+
+		$this->controller->redirect($redirectUrl);
+	}
+	
+	private function showFormWithAutoSubmit($request, $returnTo, $realm) {
+		$formId = 'openid_message';
+		$formHtml = $request->formMarkup($realm, $returnTo, false , array('id' => $formId));
+
+		if (Auth_OpenID::isFailure($formHtml)) {
+			throw new Exception('Could not redirect to server: '.$formHtml->message);
+		}
+
+		echo '<html><head><title>' . __('OpenID Authentication Redirect', true) . '</title></head>'.
+			 "<body onload='document.getElementById(\"".$formId."\").submit()'>".
+			 $formHtml.'</body></html>';
+		exit;
 	}
 	
 	private function transformEmailToOpenID($email) {
