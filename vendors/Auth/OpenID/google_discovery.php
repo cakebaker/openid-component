@@ -102,7 +102,7 @@ class GApps_OpenID_Discovery {
      * @param Auth_Yadis_HTTPFetcher $fetcher HTTP client for fetching discovery information.
      * @return array(str,array(Auth_OpenID_ServiceEndpoint))
      */ 
-    function &perform_discovery($url, $fetcher) {
+    function perform_discovery($url, $fetcher) {
         if (preg_match('_^.*://(.*?)/.*_', $url, $matches)) {
             $domain = $matches[1];
             $claimed_id = $url;
@@ -119,7 +119,7 @@ class GApps_OpenID_Discovery {
      * @param Auth_Yadis_HTTPFetcher $fetcher HTTP client for fetching discovery information.
      * @return array(str,array(Auth_OpenID_ServiceEndpoint))
      */
-    function &discover_site($domain, $fetcher) {
+    function discover_site($domain, $fetcher) {
         $url = $this->fetch_host_meta($domain, $fetcher);
         if ($url == null) {
             return;
@@ -139,7 +139,7 @@ class GApps_OpenID_Discovery {
      * @param Auth_Yadis_HTTPFetcher $fetcher HTTP client for fetching discovery information.
      * @return array(str,array(Auth_OpenID_ServiceEndpoint))
      */
-    function &discover_user($domain, $claimed_id, $fetcher) {
+    function discover_user($domain, $claimed_id, $fetcher) {
         $site_url = $this->fetch_host_meta($domain, $fetcher);
         if ($site_url == null) {
             return;
