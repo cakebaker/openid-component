@@ -199,7 +199,7 @@ class GApps_OpenID_Discovery {
         if ($use_cache) {
             $body = $this->get_cache($url);            
         }
-        if ($body == null) {
+        if (!isset($body)) {
             $http_resp = @$fetcher->get($url);
             if ($http_resp->status != 200 and $http_resp->status != 206) {
                 throw new GApps_Discovery_Exception("Received $http_resp->status when fetching $url");
