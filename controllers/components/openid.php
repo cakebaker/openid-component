@@ -4,9 +4,6 @@
  * 
  * Requires at least version 2.1.0 of PHP OpenID library from http://openidenabled.com/php-openid/
  * 
- * To make use of Email Address to URL Transformation (EAUT), you also need the
- * EAUT library: http://code.google.com/p/eaut/
- *
  * To use the MySQLStore, the following steps are required:
  * - get PEAR DB: http://pear.php.net/package/DB
  * - run the openid.sql script to create the required tables 
@@ -14,6 +11,12 @@
  *     public $components = array('Openid' => array('use_database' => true)); // uses the "default" database configuration
  *     public $components = array('Openid' => array('database_config' => 'name_of_database_config'));
  * 
+ * To accept Google Apps OpenIDs, use the following config setting:
+ *     public $components = array('Openid' => array('accept_google_apps' => true));
+ *
+ * To make use of Email Address to URL Transformation (EAUT), you also need the
+ * EAUT library: http://code.google.com/p/eaut/
+ *
  * Copyright (c) by Daniel Hofstetter (http://cakebaker.42dh.com)
  *
  * Licensed under The MIT License
@@ -26,6 +29,7 @@ class OpenidComponent extends Object {
 	private $importPrefix = '';
 	private $useDatabase = false;
 	private $databaseConfig = 'default';
+	private $acceptGoogleApps = false;
 	const AX = 'ax';
 	const SREG_REQUIRED = 'sreg_required';
 	const SREG_OPTIONAL = 'sreg_optional';
@@ -55,6 +59,10 @@ class OpenidComponent extends Object {
 		if (isset($settings['database_config'])) {
 			$this->databaseConfig = $settings['database_config'];
 			$this->useDatabase = true;
+		}
+
+		if (isset($settings['accept_google_apps'])) {
+			$this->acceptGoogleApps = $settings['accept_google_apps'];
 		}
 	}
 
@@ -152,7 +160,13 @@ class OpenidComponent extends Object {
 	}
 	
 	private function getConsumer() {
-		return new Auth_OpenID_Consumer($this->getStore());
+		$consumer = new Auth_OpenID_Consumer($this->getStore());
+
+		if ($this->acceptGoogleApps) {
+		    new GApps_OpenID_Discovery($consumer);
+		}
+
+		return $consumer;
 	}
 
 	private function getFileStore() {
@@ -244,6 +258,7 @@ class OpenidComponent extends Object {
 		App::import('Vendor', $this->importPrefix.'consumer', array('file' => 'Auth'.DS.'OpenID'.DS.'Consumer.php'));
 		App::import('Vendor', $this->importPrefix.'sreg', array('file' => 'Auth'.DS.'OpenID'.DS.'SReg.php'));
 		App::import('Vendor', $this->importPrefix.'ax', array('file' => 'Auth'.DS.'OpenID'.DS.'AX.php'));
+		App::import('Vendor', $this->importPrefix.'google', array('file' => 'Auth'.DS.'OpenID'.DS.'google_discovery.php'));
 	}
 	
 	private function isEmail($string) {
