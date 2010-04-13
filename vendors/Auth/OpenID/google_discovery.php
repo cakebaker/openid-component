@@ -172,7 +172,6 @@ class GApps_OpenID_Discovery {
         $host_meta_url = sprintf($this->host_meta_template, $domain);
         $http_resp = @$fetcher->get($host_meta_url);
         if ($http_resp->status != 200 and $http_resp->status != 206) {
-            trigger_error("Received $http_resp->status when fetching $host_meta_url", E_USER_NOTICE);
             return null;
         }
         if (!preg_match('/Link: <(.*)>;/', $http_resp->body, $matches)) {
