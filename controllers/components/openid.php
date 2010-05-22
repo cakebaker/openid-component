@@ -226,7 +226,9 @@ class OpenidComponent extends Object {
 	
 	private function getPluginName() {
 		$result = array();
-		if (preg_match('#'.DS.'plugins'.DS.'(.*)'.DS.'controllers#', __FILE__, $result)) { 
+		$ds = (Folder::isWindowsPath(__FILE__)) ? '\\\\' : DS;
+
+		if (preg_match('#'.$ds.'plugins'.$ds.'(.*)'.$ds.'controllers#', __FILE__, $result)) {
 			return $result[1];
 		}
 		
@@ -238,7 +240,7 @@ class OpenidComponent extends Object {
 		
 		// unset the url parameter automatically added by app/webroot/.htaccess 
 		// as it causes problems with the verification of the return_to url
-    	unset($query['url']);
+		unset($query['url']);
     	
     	return $query;
 	}
