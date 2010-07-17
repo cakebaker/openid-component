@@ -125,7 +125,7 @@ class OpenidComponent extends Object {
 	}
 	
 	public function isOpenIDResponse() {
-		if (count($_GET) > 1 && isset($this->controller->params['url']['openid_ns'])) {
+		if (count($_GET) > 1 && isset($this->controller->params['url']['openid_identity'])) {
 			return true;
 		}
 		
