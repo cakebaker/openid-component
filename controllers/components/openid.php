@@ -2,10 +2,9 @@
 /**
  * A simple OpenID consumer component for CakePHP.
  * 
- * Requires at least version 2.1.0 of PHP OpenID library from http://openidenabled.com/php-openid/
+ * Depends on version 2.2.2 of the PHP OpenID library (http://openidenabled.com/php-openid/)
  * 
  * To use the MySQLStore, the following steps are required:
- * - get PEAR DB: http://pear.php.net/package/DB
  * - run the openid.sql script to create the required tables 
  * - use one of the following config settings when adding the component to the $components array of your controller(s):
  *     public $components = array('Openid' => array('use_database' => true)); // uses the "default" database configuration
@@ -17,7 +16,7 @@
  * To make use of Email Address to URL Transformation (EAUT), you also need the
  * EAUT library: http://code.google.com/p/eaut/
  *
- * Copyright (c) by Daniel Hofstetter (http://cakebaker.42dh.com)
+ * Copyright (c) by Daniel Hofstetter (daniel.hofstetter@42dh.com, http://cakebaker.42dh.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
