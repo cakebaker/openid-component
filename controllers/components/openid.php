@@ -182,6 +182,7 @@ class OpenidComponent extends Object {
 	private function getMySQLStore() {
 		App::import('Vendor', $this->importPrefix.'peardb', array('file' => 'pear'.DS.'DB.php'));
 		App::import('Vendor', $this->importPrefix.'mysqlstore', array('file' => 'Auth'.DS.'OpenID'.DS.'MySQLStore.php'));
+		App::import('Core', 'ConnectionManager');
 		$dataSource = ConnectionManager::getDataSource($this->databaseConfig);
 			
 		$dsn = array(
