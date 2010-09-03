@@ -80,8 +80,9 @@ class OpenidComponent extends Object {
 	public function authenticate($openidUrl, $returnTo, $realm, $dataFields = array()) {
 		$defaults = array(self::AX => array(), self::SREG_REQUIRED => array(), self::SREG_OPTIONAL => array());
 		$dataFields = array_merge($defaults, $dataFields);
+                $openidUrl = trim($openidUrl);
 		
-		if (trim($openidUrl) != '') {
+		if ($openidUrl != '') {
 			if ($this->isEmail($openidUrl)) {
 				$openidUrl = $this->transformEmailToOpenID($openidUrl);
 			}
