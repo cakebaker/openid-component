@@ -125,7 +125,7 @@ class OpenidComponent extends Object {
     }
 
     public function isOpenIDResponse() {
-        if (count($_GET) > 1 && isset($this->controller->params['url']['openid_identity'])) {
+        if ($this->isOpenIDResponseViaGET() || $this->isOpenIDResponseViaPOST()) {
             return true;
         }
 
@@ -267,6 +267,14 @@ class OpenidComponent extends Object {
 
     private function isEmail($string) {
         return strpos($string, '@');
+    }
+
+    private function isOpenIDResponseViaGET() {
+        return (isset($this->controller->params['url']['openid_identity']));
+    }
+
+    private function isOpenIDResponseViaPOST() {
+        return (isset($this->controller->params['form']['openid_identity']));
     }
 
     private function isPathWithinPlugin($path) {
