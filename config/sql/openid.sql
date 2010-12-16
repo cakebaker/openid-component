@@ -1,7 +1,7 @@
 -- Extracted from Auth/OpenID/MySQLStore.php
 
 CREATE TABLE oid_associations (
-	server_url BLOB NOT NULL,
+	server_url VARCHAR(2047) NOT NULL,
 	handle VARCHAR(255) NOT NULL,
 	secret BLOB NOT NULL,
 	issued INTEGER NOT NULL,
