@@ -23,7 +23,7 @@
  *
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
-class OpenidComponent extends Object {
+class OpenidComponent extends Component {
     private $controller = null;
     private $importPrefix = '';
     private $useDatabase = false;
@@ -33,8 +33,12 @@ class OpenidComponent extends Object {
     const SREG_REQUIRED = 'sreg_required';
     const SREG_OPTIONAL = 'sreg_optional';
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(ComponentCollection $collection, $settings = array()) {
+        parent::__construct($collection, $settings);
+        $this->handleSettings($settings);
+
+        // XXX ensure the session is started to avoid "Undefined variable _SESSION" notices from the OpenID lib
+        session_start();
 
         $pathToVendorsFolder = $this->getPathToVendorsFolderWithOpenIDLibrary();
 
@@ -48,21 +52,6 @@ class OpenidComponent extends Object {
 
         $this->addToIncludePath($pathToVendorsFolder);
         $this->importCoreFilesFromOpenIDLibrary();
-    }
-
-    public function initialize($controller, $settings) {
-        if (isset($settings['use_database'])) {
-            $this->useDatabase = $settings['use_database'];
-        }
-
-        if (isset($settings['database_config'])) {
-            $this->databaseConfig = $settings['database_config'];
-            $this->useDatabase = true;
-        }
-
-        if (isset($settings['accept_google_apps'])) {
-            $this->acceptGoogleApps = $settings['accept_google_apps'];
-        }
     }
 
     public function startUp($controller) {
@@ -256,6 +245,21 @@ class OpenidComponent extends Object {
         }
 
         return $store;
+    }
+
+    private function handleSettings($settings) {
+        if (isset($settings['use_database'])) {
+            $this->useDatabase = $settings['use_database'];
+        }
+
+        if (isset($settings['database_config'])) {
+            $this->databaseConfig = $settings['database_config'];
+            $this->useDatabase = true;
+        }
+
+        if (isset($settings['accept_google_apps'])) {
+            $this->acceptGoogleApps = $settings['accept_google_apps'];
+        }
     }
 
     private function importCoreFilesFromOpenIDLibrary() {
