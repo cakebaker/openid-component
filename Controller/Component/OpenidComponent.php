@@ -172,7 +172,7 @@ class OpenidComponent extends Component {
     private function getMySQLStore() {
         App::import('Vendor', $this->importPrefix.'peardb', array('file' => 'pear'.DS.'DB.php'));
         App::import('Vendor', $this->importPrefix.'mysqlstore', array('file' => 'Auth'.DS.'OpenID'.DS.'MySQLStore.php'));
-        App::import('Core', 'ConnectionManager');
+        App::uses('ConnectionManager', 'Model');
         $dataSource = ConnectionManager::getDataSource($this->databaseConfig);
 
         $dsn = array(
@@ -198,14 +198,14 @@ class OpenidComponent extends Component {
         if ($this->isPathWithinPlugin(__FILE__)) {
             $pluginName = $this->getPluginName();
 
-            if (file_exists(APP.'plugins'.DS.$pluginName.DS.'vendors'.DS.'Auth')) {
-                $pathToVendorsFolder = APP.'plugins'.DS.$pluginName.DS.'vendors'.DS;
+            if (file_exists(APP.'Plugin'.DS.$pluginName.DS.'Vendor'.DS.'Auth')) {
+                $pathToVendorsFolder = APP.'Plugin'.DS.$pluginName.DS.'Vendor'.DS;
             }
         }
 
         if ($pathToVendorsFolder == '') {
-            if (file_exists(APP.'vendors'.DS.'Auth')) {
-                $pathToVendorsFolder = APP.'vendors'.DS;
+            if (file_exists(APP.'Vendor'.DS.'Auth')) {
+                $pathToVendorsFolder = APP.'Vendor'.DS;
             } elseif (file_exists(VENDORS.'Auth')) {
                 $pathToVendorsFolder = VENDORS;
             }
@@ -216,9 +216,10 @@ class OpenidComponent extends Component {
 
     private function getPluginName() {
         $result = array();
+        App::uses('Folder', 'Utility');
         $ds = (Folder::isWindowsPath(__FILE__)) ? '\\\\' : DS;
 
-        if (preg_match('#'.$ds.'plugins'.$ds.'(.*)'.$ds.'controllers#', __FILE__, $result)) {
+        if (preg_match('#'.$ds.'Plugin'.$ds.'(.*)'.$ds.'Controller#', __FILE__, $result)) {
             return $result[1];
         }
 
@@ -282,7 +283,7 @@ class OpenidComponent extends Component {
     }
 
     private function isPathWithinPlugin($path) {
-        return strpos($path, DS.'plugins'.DS) ? true : false;
+        return strpos($path, DS.'Plugin'.DS) ? true : false;
     }
 
     private function redirect($request, $returnTo, $realm) {
