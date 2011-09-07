@@ -13,9 +13,6 @@
  * To accept Google Apps OpenIDs, use the following config setting:
  *     public $components = array('Openid' => array('accept_google_apps' => true));
  *
- * To make use of Email Address to URL Transformation (EAUT), you also need the
- * EAUT library: http://code.google.com/p/eaut/
- *
  * Copyright (c) by Daniel Hofstetter (daniel.hofstetter@42dh.com, http://cakebaker.42dh.com)
  *
  * Licensed under The MIT License
@@ -72,10 +69,6 @@ class OpenidComponent extends Component {
         $openidUrl = trim($openidUrl);
 
         if ($openidUrl != '') {
-            if ($this->isEmail($openidUrl)) {
-                $openidUrl = $this->transformEmailToOpenID($openidUrl);
-            }
-
             $consumer = $this->getConsumer();
             $authRequest = $consumer->begin($openidUrl);
         }
@@ -270,10 +263,6 @@ class OpenidComponent extends Component {
         App::import('Vendor', $this->importPrefix.'google', array('file' => 'Auth'.DS.'OpenID'.DS.'google_discovery.php'));
     }
 
-    private function isEmail($string) {
-        return strpos($string, '@');
-    }
-
     private function isOpenIDResponseViaGET() {
         return (isset($this->controller->params['url']['openid_mode']));
     }
@@ -308,13 +297,5 @@ class OpenidComponent extends Component {
              "<body onload='document.getElementById(\"".$formId."\").submit()'>".
              $formHtml.'</body></html>';
         exit;
-    }
-
-    private function transformEmailToOpenID($email) {
-        if (App::import('Vendor', $this->importPrefix.'emailtoid', array('file' => 'Auth'.DS.'Yadis'.DS.'Email.php'))) {
-            return Auth_Yadis_Email_getID($email);
-        }
-
-        throw new InvalidArgumentException('Invalid OpenID');
     }
 }
