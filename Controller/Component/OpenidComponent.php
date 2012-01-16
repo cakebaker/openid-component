@@ -293,7 +293,7 @@ class OpenidComponent extends Component {
             throw new Exception('Could not redirect to server: '.$formHtml->message);
         }
 
-        echo '<html><head><title>' . __('OpenID Authentication Redirect', true) . '</title></head>'.
+        echo '<html><head><title>' . __('OpenID Authentication Redirect') . '</title></head>'.
              "<body onload='document.getElementById(\"".$formId."\").submit()'>".
              $formHtml.'</body></html>';
         exit;
