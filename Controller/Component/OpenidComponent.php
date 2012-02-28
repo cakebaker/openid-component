@@ -61,16 +61,23 @@ class OpenidComponent extends Component {
      * Examples:
      *   $dataFields = array('sreg_required' => array('email'), 'sreg_optional' => array('nickname'));
      *   $dataFields = array('ax' => array(Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson')));
+     *
+     * @param bool $anonymous True if the OpenID request is to be sent
+     * to the server without any identifier information.  Use this
+     * when you want to transport data but don't want to do OpenID
+     * authentication with identifiers.
+     * NOTE: $openidUrl need to be the OpenID provider url for proper discovery
+     *
      * @throws InvalidArgumentException if an invalid OpenID was provided
      */
-    public function authenticate($openidUrl, $returnTo, $realm, $dataFields = array()) {
+    public function authenticate($openidUrl, $returnTo, $realm, $dataFields = array(), $anonymous = false) {
         $defaults = array(self::AX => array(), self::SREG_REQUIRED => array(), self::SREG_OPTIONAL => array());
         $dataFields = array_merge($defaults, $dataFields);
         $openidUrl = trim($openidUrl);
 
         if ($openidUrl != '') {
             $consumer = $this->getConsumer();
-            $authRequest = $consumer->begin($openidUrl);
+            $authRequest = $consumer->begin($openidUrl, $anonymous);
         }
 
         if (!isset($authRequest) || !$authRequest) {
