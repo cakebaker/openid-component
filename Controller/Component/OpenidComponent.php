@@ -268,14 +268,6 @@ class OpenidComponent extends Component {
         App::import('Vendor', $this->importPrefix.'google', array('file' => 'Auth'.DS.'OpenID'.DS.'google_discovery.php'));
     }
 
-     private function isOpenIDResponseViaGET() {
-         return (isset($this->controller->params['url']['openid_mode']));
-     }
- 
-     private function isOpenIDResponseViaPOST() {
-         return (isset($this->controller->params['form']['openid_mode']));
-     }
-
     private function isOpenIDResponseViaGET() {
         return (isset($this->controller->request->query['openid_mode']));
     }
