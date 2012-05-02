@@ -34,9 +34,6 @@ class OpenidComponent extends Component {
         parent::__construct($collection, $settings);
         $this->handleSettings($settings);
 
-        // XXX ensure the session is started to avoid "Undefined variable _SESSION" notices from the OpenID lib
-        session_start();
-
         $pathToVendorsFolder = $this->getPathToVendorsFolderWithOpenIDLibrary();
 
         if ($pathToVendorsFolder == '') {
@@ -149,7 +146,7 @@ class OpenidComponent extends Component {
     }
 
     private function getConsumer() {
-        $consumer = new Auth_OpenID_Consumer($this->getStore());
+        $consumer = new Auth_OpenID_Consumer($this->getStore(), new Auth_Yadis_CakeSession());
 
         if ($this->acceptGoogleApps) {
             new GApps_OpenID_Discovery($consumer);
@@ -265,17 +262,18 @@ class OpenidComponent extends Component {
 
     private function importCoreFilesFromOpenIDLibrary() {
         App::import('Vendor', $this->importPrefix.'consumer', array('file' => 'Auth'.DS.'OpenID'.DS.'Consumer.php'));
+        App::import('Vendor', $this->importPrefix.'Auth_Yadis_CakeSession', array('file' => 'session'.DS.'Auth_Yadis_CakeSession.php'));
         App::import('Vendor', $this->importPrefix.'sreg', array('file' => 'Auth'.DS.'OpenID'.DS.'SReg.php'));
         App::import('Vendor', $this->importPrefix.'ax', array('file' => 'Auth'.DS.'OpenID'.DS.'AX.php'));
         App::import('Vendor', $this->importPrefix.'google', array('file' => 'Auth'.DS.'OpenID'.DS.'google_discovery.php'));
     }
 
     private function isOpenIDResponseViaGET() {
-        return (isset($this->controller->params['url']['openid_mode']));
+        return (isset($this->controller->request->query['openid_mode']));
     }
 
     private function isOpenIDResponseViaPOST() {
-        return (isset($this->controller->params['form']['openid_mode']));
+        return (isset($this->controller->request->form['openid_mode']));
     }
 
     private function isPathWithinPlugin($path) {
@@ -306,3 +304,4 @@ class OpenidComponent extends Component {
         exit;
     }
 }
+
