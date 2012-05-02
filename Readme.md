@@ -50,6 +50,7 @@ echo $form->end('Login');
 Next, we have to write a controller to handle this form. Our controller has to perform the following tasks: show the login form, redirect the user to the OpenID provider after he submitted the login form, and last, but not least, handle the response from the OpenID provider.
 
 ```php
+<?php
 // app/controllers/users_controller.php
 class UsersController extends AppController {
     public $components = array('Openid', 'RequestHandler');
@@ -89,6 +90,7 @@ When testing this example, your OpenID provider might show you a warning that yo
 The [Simple Registration Extension](http://openid.net/specs/openid-simple-registration-extension-1_0.html) allows you to retrieve nine commonly requested pieces of information: nickname, email, fullname, dob (date of birth), gender, postcode, country, language, and timezone. Please be aware that some OpenID providers (for example, Google) don't support SReg.
 
 ```php
+<?php
 // app/controllers/users_controller.php
 class UsersController extends AppController {
     public $components = array('Openid', 'RequestHandler');
@@ -135,6 +137,7 @@ class UsersController extends AppController {
 [Attribute Exchange](http://openid.net/specs/openid-attribute-exchange-1_0.html) allows you to retrieve identity information from the OpenID provider, if supported. http://www.axschema.org/types contains a list with possible attribute names, though only a small subset is usually supported by the OpenID providers.
 
 ```php
+<?php
 // app/controllers/users_controller.php
 class UsersController extends AppController {
     public $components = array('Openid', 'RequestHandler');
