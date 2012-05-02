@@ -1,6 +1,0 @@
-OpenID component for CakePHP
-============================
-
-An OpenID component for CakePHP. Supports SReg (simple registration extension) and AX (attribute exchange).
-
-See http://code.42dh.com/openid for more information.
