@@ -271,11 +271,11 @@ class OpenidComponent extends Component {
     }
 
     private function isOpenIDResponseViaGET() {
-        return (isset($this->controller->params['url']['openid_mode']));
+        return (isset($this->controller->request->query['openid_mode']));
     }
 
     private function isOpenIDResponseViaPOST() {
-        return (isset($this->controller->params['form']['openid_mode']));
+        return (isset($this->controller->request->data['openid_mode']));
     }
 
     private function isPathWithinPlugin($path) {
