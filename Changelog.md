@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.1 (2012-05-03
+
+* Applying fixes from [issue #4](https://github.com/cakebaker/openid-component/pull/4): Using CakePHP 2's request object; and introducing a custom Yadis session handler (`Auth_Yadis_CakeSession`) for a more reliable session handling. Thanks to Brad Koch for the patch.
+
 ### v2.0.0 (2012-05-02)
 
 * Switching to Semantic Versioning
