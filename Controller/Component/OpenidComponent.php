@@ -48,7 +48,7 @@ class OpenidComponent extends Component {
         $this->importCoreFilesFromOpenIDLibrary();
     }
 
-    public function startUp($controller) {
+    public function startUp(Controller $controller) {
         $this->controller = $controller;
     }
 
