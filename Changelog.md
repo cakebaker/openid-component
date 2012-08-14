@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.4 (2012-08-14)
+
+* Fixing bug introduced in v2.0.3: adding a missing "!"
+
 ### v2.0.3 (2012-08-14)
 
 * Fixing a bug in the PHP OpenID library which caused a "preg_match_all() expects parameter 2 to be string, array given" warning if PHP's mbstring extension is not enabled. Thanks to Jurijs Kolomijecs for reporting.
