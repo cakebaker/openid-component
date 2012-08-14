@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.3 (2012-08-14)
+
+* Fixing a bug in the PHP OpenID library which caused a "preg_match_all() expects parameter 2 to be string, array given" warning if PHP's mbstring extension is not enabled. Thanks to Jurijs Kolomijecs for reporting.
+
 ### v2.0.2 (2012-07-12)
 
 * Applying fix from [pull request #44](https://github.com/openid/php-openid/pull/44) to the PHP OpenID library to make it work with PHP 5.4.x
