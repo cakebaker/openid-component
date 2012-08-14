@@ -219,7 +219,7 @@ class Auth_OpenID_Parse {
     function match($regexp, $text, &$match)
     {
         if (!is_callable('mb_ereg_search_init')) {
-            if (preg_match($regexp, $text, $match)) {
+            if (!preg_match($regexp, $text, $match)) {
                 return false;
             }
             $match = $match[0];
