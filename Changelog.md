@@ -1,5 +1,10 @@
 # Changelog
 
+### v2.0.5 (2014-10-10)
+
+* Adding schema. Thanks to [Jason Burgess](https://github.com/TheFenux) for the [pull request](https://github.com/cakebaker/openid-component/pull/6).
+* Applying [fix](https://github.com/cakebaker/openid-component/pull/5) from [David Steinsland](https://github.com/davidsteinsland) that fixes a PHP strict notice.
+
 ### v2.0.4 (2012-08-14)
 
 * Fixing bug introduced in v2.0.3: adding a missing "!"
