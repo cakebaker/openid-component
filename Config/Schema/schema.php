@@ -7,10 +7,6 @@
  */
 class OpenIdSchema extends CakeSchema {
 
-	/**
-	 *
-	 * @var unknown
-	 */
 	public $oid_associations = array(
 			'server_url' => array(
 					'type' => 'string',
@@ -37,10 +33,6 @@ class OpenIdSchema extends CakeSchema {
 					'collate' => 'utf8_general_ci',
 					'engine' => 'InnoDB'));
 
-	/**
-	 *
-	 * @var unknown
-	 */
 	public $oid_nonces = array(
 			'server_url' => array(
 					'type' => 'string',
