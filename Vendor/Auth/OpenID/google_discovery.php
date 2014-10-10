@@ -217,7 +217,7 @@ class GApps_OpenID_Discovery {
                 $this->put_cache($url,$body);   
             }
         }
-        $xrds =& Auth_Yadis_XRDS::parseXRDS($body);
+        $xrds = Auth_Yadis_XRDS::parseXRDS($body);
         return $xrds;
     }
 
